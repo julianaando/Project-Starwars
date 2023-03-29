@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-// começando o projeto
+// começando o projeto com commit inicial
 
 function App() {
   return (
