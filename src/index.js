@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import { PlanetProvider } from './context/PlanetContext';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
-    <BrowserRouter>
+    <PlanetProvider>
       <App />
-    </BrowserRouter>,
+    </PlanetProvider>,
   );
