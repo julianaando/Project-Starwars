@@ -16,8 +16,8 @@ function Filter() {
 
   const { planets, setFilteredPlanets } = useContext(PlanetContext);
 
-  // const [showFilterResults, setShowFilterResults] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState([]);
+  // const [usedColumns, setUsedColumns] = useState([]); // array de colunas usadas
 
   const filterPlanets = (filters) => {
     const filteredPlanets = planets.filter((planet) => (
@@ -34,15 +34,22 @@ function Filter() {
       })
     ));
     setFilteredPlanets(filteredPlanets);
-    // setShowFilterResults(true);
   };
+
+  // const loadNewFilter = () => { // função que carrega um novo filtro
+  //   const newColumn = [ // array com as colunas
+  //     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'] 
+  //     .find((column) => !usedColumns.includes(column)); // encontra a primeira coluna que não está no array de colunas usadas
+  //   if (newColumn) { // se achar uma coluna que não está no array de colunas usadas
+  //     setDropColumn(newColumn); // seta a coluna no state
+  //   }
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newFilters = [
       ...appliedFilters,
       { column: dropColumn, comparison: dropComparison, value: dropValue },
-      // `${dropColumn} ${dropComparison} ${dropValue}`,
     ];
     setAppliedFilters(newFilters);
     filterPlanets(newFilters);
@@ -59,15 +66,11 @@ function Filter() {
 
     setAppliedFilters(newFilters);
     filterPlanets(newFilters);
-    // if (updatedFilters.length === 0) {
-    //   setShowFilterResults(false);
-    // }
   };
 
   const handleClearAllFilters = () => {
     setAppliedFilters([]);
     filterPlanets([]);
-    // setShowFilterResults(false);
   };
 
   return (
@@ -137,8 +140,6 @@ function Filter() {
           Limpar filtros
         </button>
       </form>
-      {/* {showFilterResults ? (
-        <div> */}
       {appliedFilters.map((filter, index) => (
         <div key={ index } data-testid="filter">
           {filter.column}
@@ -149,15 +150,12 @@ function Filter() {
           <button
             type="button"
             name="delete-filter"
-            // data-testid="filter"
             onClick={ () => handleClearFilter(index) }
           >
             Delete
           </button>
         </div>
       ))}
-      {/* </div>
-      ) : null} */}
     </div>
   );
 }
