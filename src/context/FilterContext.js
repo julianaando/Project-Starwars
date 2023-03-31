@@ -1,5 +1,6 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { PlanetContext } from './PlanetContext';
 
 const FilterContext = createContext();
 
@@ -8,8 +9,10 @@ function FilterProvider({ children }) {
   const [dropColumn, setDropColumn] = useState('population');
   const [dropComparison, setDropComparison] = useState('maior que');
   const [dropValue, setDropValue] = useState('0');
+  const { planets } = useContext(PlanetContext);
 
   const contextFilter = {
+    planets,
     filterByName,
     setFilterByName,
     dropColumn,
