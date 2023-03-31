@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 const PlanetContext = createContext();
 function PlanetProvider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
 
   const context = {
     planets,
-    setPlanets,
+    filteredPlanets,
+    setFilteredPlanets,
   };
 
   useEffect(() => {
@@ -21,6 +23,7 @@ function PlanetProvider({ children }) {
             return newPlanet;
           });
         setPlanets(planetsInfo);
+        setFilteredPlanets(planetsInfo);
       })
       .catch((error) => console.error(error));
   }, []);

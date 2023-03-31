@@ -14,32 +14,60 @@ function Filter() {
     setDropValue,
   } = useContext(FilterContext);
 
-  const { planets, setPlanets } = useContext(PlanetContext);
+  const { planets, setFilteredPlanets } = useContext(PlanetContext);
 
-  const [showFilterResults, setShowFilterResults] = useState(false);
+  // const [showFilterResults, setShowFilterResults] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState([]);
+
+  const filterPlanets = (filters) => {
+    const filteredPlanets = planets.filter((planet) => (
+      filters.every(({ comparison, column, value }) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(value);
+        }
+
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(value);
+        }
+
+        return Number(planet[column]) === Number(value);
+      })
+    ));
+    setFilteredPlanets(filteredPlanets);
+    // setShowFilterResults(true);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const filteredPlanets = planets.filter((planet) => {
-      if (dropComparison === 'maior que') {
-        return Number(planet[dropColumn]) > Number(dropValue);
-      } if (dropComparison === 'menor que') {
-        return Number(planet[dropColumn]) < Number(dropValue);
-      } if (dropComparison === 'igual a') {
-        return Number(planet[dropColumn]) === Number(dropValue);
-      }
-      return true;
-    });
-    setPlanets(filteredPlanets);
-    setShowFilterResults(true);
-    setAppliedFilters([
+    const newFilters = [
       ...appliedFilters,
-      `${dropColumn} ${dropComparison} ${dropValue}`,
-    ]);
+      { column: dropColumn, comparison: dropComparison, value: dropValue },
+      // `${dropColumn} ${dropComparison} ${dropValue}`,
+    ];
+    setAppliedFilters(newFilters);
+    filterPlanets(newFilters);
     setDropColumn('population');
     setDropComparison('maior que');
     setDropValue('0');
+  };
+
+  const handleClearFilter = (index) => {
+    const newFilters = [
+      ...appliedFilters.slice(0, index),
+      ...appliedFilters.slice(index + 1),
+    ];
+
+    setAppliedFilters(newFilters);
+    filterPlanets(newFilters);
+    // if (updatedFilters.length === 0) {
+    //   setShowFilterResults(false);
+    // }
+  };
+
+  const handleClearAllFilters = () => {
+    setAppliedFilters([]);
+    filterPlanets([]);
+    // setShowFilterResults(false);
   };
 
   return (
@@ -101,22 +129,35 @@ function Filter() {
         <button type="submit" data-testid="button-filter" onClick={ handleSubmit }>
           Filtrar
         </button>
+        <button
+          type="button"
+          data-testid="button-remove-filters"
+          onClick={ handleClearAllFilters }
+        >
+          Limpar filtros
+        </button>
       </form>
-      {showFilterResults ? (
-        <div>
-          {appliedFilters.map((filter, index) => (
-            <div key={ index }>
-              {filter}
-              <button
-                type="button"
-                name="delete-filter"
-              >
-                Delete
-              </button>
-            </div>
-          ))}
+      {/* {showFilterResults ? (
+        <div> */}
+      {appliedFilters.map((filter, index) => (
+        <div key={ index } data-testid="filter">
+          {filter.column}
+          {' '}
+          {filter.comparison}
+          {' '}
+          {filter.value}
+          <button
+            type="button"
+            name="delete-filter"
+            // data-testid="filter"
+            onClick={ () => handleClearFilter(index) }
+          >
+            Delete
+          </button>
         </div>
-      ) : null}
+      ))}
+      {/* </div>
+      ) : null} */}
     </div>
   );
 }

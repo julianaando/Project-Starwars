@@ -298,5 +298,13 @@ describe('Testa a aplicação', () => {
     fireEvent.click(screen.getByTestId('button-filter'));
     expect(screen.getByText('Tatooine')).toBeInTheDocument();
   });
+  it('Testa os botões de limpar filtros', () => {
+    fireEvent.change(screen.getByTestId('column-filter'), { target: { value: 'orbital_period' } });
+    fireEvent.change(screen.getByTestId('comparison-filter'),{ target: { value: 'igual a' } });
+    fireEvent.change(screen.getByTestId('value-filter'), { target: { value: '304' } });
+    fireEvent.click(screen.getByTestId('button-filter'));
+    fireEvent.click(screen.getByText('Delete'));
+    expect(screen.getByText('Hoth')).toBeInTheDocument();
+  })
 });
 

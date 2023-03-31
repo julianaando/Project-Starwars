@@ -7,9 +7,9 @@ function Table() {
     filterByName,
   } = useContext(FilterContext);
 
-  const { planets } = useContext(PlanetContext);
+  const { filteredPlanets } = useContext(PlanetContext);
 
-  const filteredPlanets = planets
+  const filteredPlanetsByName = filteredPlanets
     .filter((planet) => planet.name.toLowerCase().includes(filterByName.toLowerCase()));
 
   return (
@@ -32,7 +32,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {filteredPlanets && filteredPlanets.map((planet) => (
+        {filteredPlanetsByName?.map((planet) => (
           <tr key={ planet.name }>
             <td>{planet.name}</td>
             <td>{planet.rotation_period}</td>
