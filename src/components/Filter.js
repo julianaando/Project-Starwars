@@ -12,12 +12,23 @@ function Filter() {
     setDropComparison,
     dropValue,
     setDropValue,
+    columnOptions,
+    setColumnOptions,
   } = useContext(FilterContext);
 
   const { planets, setFilteredPlanets } = useContext(PlanetContext);
 
-  const [appliedFilters, setAppliedFilters] = useState([]);
-  // const [usedColumns, setUsedColumns] = useState([]); // array de colunas usadas
+  const [appliedFilters, setAppliedFilters] = useState([]); // array de filtros aplicados
+
+  const removeColumnFilter = () => {
+    if (columnOptions.length > 0) {
+      const newColumnfilter = columnOptions
+        .filter((handleOption) => handleOption !== dropColumn);
+      setColumnOptions(newColumnfilter);
+      setDropColumn(newColumnfilter[0]);
+    }
+    return columnOptions;
+  };
 
   const filterPlanets = (filters) => {
     const filteredPlanets = planets.filter((planet) => (
@@ -36,15 +47,6 @@ function Filter() {
     setFilteredPlanets(filteredPlanets);
   };
 
-  // const loadNewFilter = () => { // função que carrega um novo filtro
-  //   const newColumn = [ // array com as colunas
-  //     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'] 
-  //     .find((column) => !usedColumns.includes(column)); // encontra a primeira coluna que não está no array de colunas usadas
-  //   if (newColumn) { // se achar uma coluna que não está no array de colunas usadas
-  //     setDropColumn(newColumn); // seta a coluna no state
-  //   }
-  // };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const newFilters = [
@@ -56,6 +58,7 @@ function Filter() {
     setDropColumn('population');
     setDropComparison('maior que');
     setDropValue('0');
+    removeColumnFilter();
   };
 
   const handleClearFilter = (index) => {
@@ -97,11 +100,11 @@ function Filter() {
             value={ dropColumn } // valor inicial do select
             onChange={ ({ target }) => setDropColumn(target.value) } // função que atualiza o estado
           >
-            <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            {columnOptions.map((option) => (
+              <option key={ option } value={ option }>
+                {option}
+              </option>
+            ))}
           </select>
         </label>
         <label htmlFor="comparison">

@@ -306,5 +306,18 @@ describe('Testa a aplicação', () => {
     fireEvent.click(screen.getByText('Delete'));
     expect(screen.getByText('Hoth')).toBeInTheDocument();
   })
+  it('Testa o botão de limpar todos os filtros', () => {
+    for (const column of ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']) {
+      expect(screen.getByTestId('column-filter')).toHaveValue(column);
+      // fireEvent.change(screen.getByTestId('column-filter'), { target: { value: column } });
+      // fireEvent.change(screen.getByTestId('comparison-filter'),{ target: { value: 'igual a' } });
+      // fireEvent.change(screen.getByTestId('value-filter'), { target: { value: '304' } });
+      fireEvent.click(screen.getByTestId('button-filter'));
+    }
+    fireEvent.click(screen.getByTestId('button-filter'));
+    fireEvent.click(screen.getByText('Limpar filtros'));
+    expect(screen.getByText('Hoth')).toBeInTheDocument();
+  })
+  
 });
 

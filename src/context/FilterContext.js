@@ -10,6 +10,13 @@ function FilterProvider({ children }) {
   const [dropComparison, setDropComparison] = useState('maior que');
   const [dropValue, setDropValue] = useState('0');
   const { planets } = useContext(PlanetContext);
+  const [columnOptions, setColumnOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   const contextFilter = {
     planets,
@@ -21,6 +28,8 @@ function FilterProvider({ children }) {
     setDropComparison,
     dropValue,
     setDropValue,
+    columnOptions,
+    setColumnOptions,
   };
 
   return (
