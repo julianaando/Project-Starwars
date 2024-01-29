@@ -36,11 +36,9 @@ function Filter() {
         if (comparison === 'maior que') {
           return Number(planet[column]) > Number(value);
         }
-
         if (comparison === 'menor que') {
           return Number(planet[column]) < Number(value);
         }
-
         return Number(planet[column]) === Number(value);
       })
     ));
